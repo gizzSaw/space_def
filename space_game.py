@@ -1,17 +1,20 @@
 import pygame, controls
 from gun import Gun
-
+from pygame.sprite import Group
 
 def run():
     pygame.init()
     screen = pygame.display.set_mode((600, 700))
     pygame.display.set_caption("Space Defenders")
-    bg_color = (110, 10, 10)
+    bg_color = (0, 0, 0)
     gun = Gun(screen)
+    bullets = Group()
+
+
     while True:
-        controls.events(gun)
+        controls.events(screen, gun, bullets)
         gun.update_gun()
-        screen.fill(bg_color)
-        gun.output()
-        pygame.display.flip()
+        controls.update(bg_color,screen, gun, bullets)
+        controls.update_bullets(bullets)
+
 run()
