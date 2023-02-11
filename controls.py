@@ -26,33 +26,44 @@ def events(screen, gun, bullets):
             #влево
             elif event.key == pygame.K_a:
                 gun.mleft = False
-def update(bg_color, screen, gun, inos, bullets):
+def update(bg_color,screen, stats, sc, gun, inos, bullets):
     """обновление экрана"""
     screen.fill(bg_color)
+    sc.show_score()
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     gun.output()
     inos.draw(screen)
     pygame.display.flip()
 
-def update_bullets(screen, inos, bullets): 
+def update_bullets(screen, stats, sc, inos, bullets): 
     """обновление позиции пуль"""
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
-    colisions = pygame.sprite.groupcollide(bullets, inos, True, True)
+    collisions = pygame.sprite.groupcollide(bullets, inos, True, True)
+    if collisions:
+        for inos in collisions.values():
+            stats.score += 8 * len(inos)
+        sc.image_score()
+
     if len(inos) == 0:
         bullets.empty()
         create_army(screen, inos)
+
 def gun_kill(stats, screen, gun, inos, bullets):
     """столкновение пушки и армии"""
-    stats.guns_left -= 1
-    inos.empty()
-    bullets.empty()
-    create_army(screen, inos)
-    gun.create_gun()
-    time.sleep(1)
+    if stats.guns_left > 0: 
+        stats.guns_left -= 1
+        inos.empty()
+        bullets.empty()
+        create_army(screen, inos)
+        gun.create_gun()
+        time.sleep(1)
+    else:
+        stats.run_game = False
+        sys.exit()
 
 def update_inos(stats, screen, gun, inos, bullets):
     """обновляет позицию пришельца"""
