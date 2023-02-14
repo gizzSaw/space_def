@@ -73,9 +73,9 @@ def update_inos(stats, screen, sc, gun, inos, bullets):
     inos.update()
     if pygame.sprite.spritecollideany(gun, inos):
         gun_kill(stats, screen, sc, gun, inos, bullets)
-    inos_check(stats, screen, gun, inos, bullets)
+    inos_check(stats, screen, sc, gun, inos, bullets)
 
-def inos_check(stats, screen, gun, inos, bullets):
+def inos_check(stats, screen, sc, gun, inos, bullets):
     """проверка, добралась ли армия до края экрана"""
     screen_rect = screen.get_rect()
     for ino in inos.sprites():
