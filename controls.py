@@ -47,6 +47,7 @@ def update_bullets(screen, stats, sc, inos, bullets):
         for inos in collisions.values():
             stats.score += 8 * len(inos)
         sc.image_score()
+        check_high_score(stats, sc)
 
     if len(inos) == 0:
         bullets.empty()
@@ -97,3 +98,9 @@ def create_army(screen, inos):
             ino.rect.x = ino.x
             ino.rect.y = ino.rect.height + ino.rect.height * row_number
             inos.add(ino)
+
+def check_high_score(stats, sc):
+    """проверка новых рекордов"""
+    if stats.score > stats.high_score:
+        stats.high_score = stats.score
+        sc.image_high_score()
